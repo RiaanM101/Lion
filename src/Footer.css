@@ -1,0 +1,50 @@
+/* src/components/Footer/Footer.css */
+
+/* General Footer Styles */
+.footer {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* White text color */
+  }
+  
+  /* Footer heading */
+  .footer h5 {
+    margin-bottom: 20px; /* Space below headings */
+    font-weight: bold; /* Bold headings */
+  }
+  
+  /* Footer links */
+  .footer a {
+    color: #ffffff; /* White color for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+  
+  .footer a:hover {
+    color: #ffcc00; /* Yellow color on hover */
+  }
+  
+  /* Social media icons */
+  .footer .fa-icon {
+    margin-right: 10px; /* Space between icons */
+  }
+  
+  .footer .fa-icon:hover {
+    color: #ffcc00; /* Yellow color on hover */
+  }
+  
+  /* Newsletter form */
+  .footer .form-control {
+    border-radius: 0; /* Square borders */
+    margin-bottom: 10px; /* Space below input */
+  }
+  
+  .footer .btn-primary {
+    background-color: #004d99; /* Dark blue background */
+    border-color: #004d99; /* Dark blue border */
+  }
+  
+  .footer .btn-primary:hover {
+    background-color: #003366; /* Darker blue on hover */
+    border-color: #003366; /* Darker blue border on hover */
+  }
+  

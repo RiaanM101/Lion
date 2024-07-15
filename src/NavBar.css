@@ -1,0 +1,42 @@
+/* src/components/NavBar.css */
+
+/* Navbar container */
+.navbar {
+    background-color: #004d99; /* Dark blue background */
+    border-bottom: 2px solid #003366; /* Darker blue border */
+  }
+  
+  /* Navbar brand (logo and text) */
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand img {
+    margin-right: 10px; /* Space between logo and text */
+  }
+  
+  .navbar-brand span {
+    font-size: 1.5em; /* Increase font size for brand name */
+    font-weight: bold;
+    color: #ffffff; /* White color for brand text */
+  }
+  
+  /* Navbar links */
+  .nav-link {
+    color: #ffffff !important; /* White color for links */
+    font-size: 1.1em; /* Slightly larger font size */
+    margin-left: 15px; /* Space between links */
+    transition: color 0.3s ease; /* Smooth color transition */
+  }
+  
+  .nav-link:hover {
+    color: #ffcc00 !important; /* Yellow color on hover */
+  }
+  
+  /* Navbar links active state */
+  .nav-link.active {
+    color: #ffcc00 !important; /* Yellow color for active link */
+    font-weight: bold; /* Bold text for active link */
+  }
+  

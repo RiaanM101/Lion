@@ -1,0 +1,70 @@
+/* LoginPage.css */
+
+/* General styling for the container */
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 50px; /* Add this line for spacing at the bottom */
+  }
+  
+  /* Styling for the form header */
+  .login-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for the form elements */
+  .login-form .form-label {
+    font-weight: bold;
+  }
+  
+  .login-form .input-group-text {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .login-form .form-control {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .login-form .btn {
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .login-form .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-form .input-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Responsive design for mobile devices */
+  @media (max-width: 576px) {
+    .login-container {
+      padding: 15px;
+    }
+  
+    .login-container h1 {
+      font-size: 24px;
+    }
+  
+    .login-form .form-control {
+      font-size: 14px;
+    }
+  
+    .login-form .btn {
+      font-size: 16px;
+    }
+  }
+  
