@@ -1,0 +1,38 @@
+/* src/styles/CartPage.css */
+
+.cart-page {
+    padding: 20px;
+  }
+  
+  .cart-page h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .cart-page ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .cart-page li {
+    margin: 10px 0;
+  }
+  
+  .cart-page .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .cart-page .item button {
+    padding: 5px 10px;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .cart-page .item button:hover {
+    background-color: #cc0000;
+  }
+  
