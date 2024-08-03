@@ -37,7 +37,6 @@ const RegisterPage = () => {
       if (window.google && window.google.maps) {
         const autocomplete = new window.google.maps.places.Autocomplete(addressInputRef.current, {
           types: ['address'],
-          componentRestrictions: { country: 'us' } // Adjust as needed
         });
 
         autocomplete.addListener('place_changed', () => {
@@ -80,7 +79,7 @@ const RegisterPage = () => {
       newErrors.address = 'Address is required';
     }
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newErrors).length == 0;
   };
 
   const handleSubmit = async (e) => {
