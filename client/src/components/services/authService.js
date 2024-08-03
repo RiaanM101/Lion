@@ -1,24 +1,19 @@
-// src/services/authService.js
-
 import axios from 'axios';
 
-const API_URL = 'http://yourapiurl.com/api/auth'; // Replace with your actual API URL
+const API_BASE_URL = 'http://localhost:7048/api'; // Replace with your actual API base URL
 
-// Define the login function
-const login = async (username, password) => {
-  try {
-    const response = await axios.post(`${API_URL}/login`, { username, password });
-    if (response.data.token) {
-      localStorage.setItem('user', JSON.stringify(response.data));
-    }
-    return response.data;
-  } catch (error) {
-    console.error('Login error:', error);
-    throw error;
-  }
+export const register = async (email, password) => {
+  const response = await axios.post(`${API_BASE_URL}/auth/register`, {
+    email,
+    password,
+  });
+  return response.data;
 };
 
-// Define other auth functions if needed
-
-// Export the login function
-export default login;
+export const login = async (email, password) => {
+  const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+    email,
+    password,
+  });
+  return response.data;
+};
