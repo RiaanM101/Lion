@@ -12,7 +12,7 @@ function HomePage() {
         <Col md={8} className="homepage-content">
           <p>
             <strong><h1>Welcome to LionRock88</h1></strong><br />
-            #Testing At LionRock88, we’re not just a clothing brand; we’re a movement towards a greener, more sustainable future. We believe that fashion shouldn’t come at the cost of our planet, which is why we’ve created a line of skater clothing that’s not only stylish and edgy but also environmentally friendly.
+             At LionRock88, we’re not just a clothing brand; we’re a movement towards a greener, more sustainable future. We believe that fashion shouldn’t come at the cost of our planet, which is why we’ve created a line of skater clothing that’s not only stylish and edgy but also environmentally friendly.
             <h1>Eco-Friendly Promise</h1>
             🌱 Recycled Materials: We’re proud to say that every piece of clothing in our collection is crafted from high-quality recycled materials. By repurposing materials like plastic bottles and discarded textiles, we’re reducing waste and minimizing our carbon footprint.
             🌎 Conscious Production: Our commitment to the environment extends beyond just materials. We’ve implemented sustainable production practices, ensuring that every step of our manufacturing process is as eco-friendly as possible. From energy-efficient machinery to responsible dyeing techniques, we’re mindful of the impact we leave behind.
