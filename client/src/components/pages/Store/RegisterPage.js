@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { register as registerAction } from '../../redux/authSlice';
 import { register } from '../../services/authService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +19,7 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const addressInputRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
@@ -48,21 +50,23 @@ const RegisterPage = () => {
 
     loadGoogleMapsScript();
   }, []);
-
+//Username validation
   const validateForm = () => {
     const newErrors = {};
     const usernamePattern = /^[a-zA-Z]{1,}\d{0,2}$/;
-
+//Email validation
     if (!email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
+    //Username validation
     if (!username) {
       newErrors.username = 'Username is required';
     } else if (!usernamePattern.test(username)) {
       newErrors.username = 'Username can only contain letters and up to 2 numbers, and no spaces or special characters';
     }
+    //Password validation
     if (!password) {
       newErrors.password = 'Password is required';
     } else if (password.length < 6) {
@@ -76,14 +80,20 @@ const RegisterPage = () => {
     } else if (!/[!@#$%^&*]/.test(password)) {
       newErrors.password = 'Password must contain at least one special character';
     }
-    if (!contactNumber) {
-      newErrors.contactNumber = 'Contact number is required';
-    }
+  
+     // Contact number validation
+  if (!contactNumber) {
+    newErrors.contactNumber = 'Contact number is required';
+  } else if (!/^\+\d+$/i.test(contactNumber)) {
+    newErrors.contactNumber = 'Contact number should start with a "+" and include your area code';
+  } else if (/\s/.test(contactNumber)) {
+    newErrors.contactNumber = 'Contact number should not contain spaces';
+  }
     if (!address) {
       newErrors.address = 'Address is required';
     }
     setErrors(newErrors);
-    return Object.keys(newErrors).length == 0;
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -96,11 +106,14 @@ const RegisterPage = () => {
       dispatch(registerAction(userData));
       Swal.fire({
         title: 'Success!',
-        text: 'User registered successfully',
+        text: 'Registration successful!',
         icon: 'success',
-        confirmButtonText: 'OK'
+        timer: 5000, // 5 seconds
+        timerProgressBar: true,
+        willClose: () => {
+          navigate('/login'); // Redirect to login page after the alert closes
+        }
       });
-      // Redirect or perform any other action after successful registration
     } catch (error) {
       console.error('Registration failed:', error);
       Swal.fire({
