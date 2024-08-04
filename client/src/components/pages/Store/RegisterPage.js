@@ -51,6 +51,8 @@ const RegisterPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    const usernamePattern = /^[a-zA-Z]{1,}\d{0,2}$/;
+
     if (!email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -58,6 +60,8 @@ const RegisterPage = () => {
     }
     if (!username) {
       newErrors.username = 'Username is required';
+    } else if (!usernamePattern.test(username)) {
+      newErrors.username = 'Username can only contain letters and up to 2 numbers, and no spaces or special characters';
     }
     if (!password) {
       newErrors.password = 'Password is required';

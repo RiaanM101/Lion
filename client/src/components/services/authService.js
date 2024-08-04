@@ -1,22 +1,23 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api'; // Replace with your actual API base URL
+const API_BASE_URL = 'https://localhost:5000/api';
 
-export const register = async (username,email, password,contact_number,address) => {
-  const response = await axios.post(`${API_BASE_URL}/Auth/register`, {
-    email,
-    password,
-    username,
-    contact_number,
-    address
-  });
-  return response.data;
+export const register = async (userDetails) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/Auth/register`, userDetails);
+    return response.data;
+  } catch (error) {
+    console.error('Error registering user:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
-export const login = async (email, password) => {
-  const response = await axios.post(`${API_BASE_URL}/Auth/login`, {
-    email,
-    password,
-  });
-  return response.data;
+export const login = async (Email, Password) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/Auth/login`, { Email, Password });
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
