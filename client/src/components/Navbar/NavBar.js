@@ -1,13 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux'; // Assuming you're using Redux for state management
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt, faUserPlus, faTachometerAlt, faBlog, faStore } from '@fortawesome/free-solid-svg-icons';
-import { faTwitter, faInstagram, faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { faSignInAlt, faUserPlus, faStore, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../NavBar.css';
 
 const NavBar = () => {
+  const cartItemCount = useSelector((state) => state.cart.items.length); // Replace 'cart.items.length' with your cart item count selector
+
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
@@ -32,18 +34,13 @@ const NavBar = () => {
           </Nav.Link>
           <Nav.Link as={Link} to="/store">
             <FontAwesomeIcon icon={faStore} className="me-2" />
-            Store
+            Products
           </Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-            <FontAwesomeIcon icon={faTwitter} size="2x" className="text-white me-2" />
-          </Nav.Link>
-          <Nav.Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-            <FontAwesomeIcon icon={faInstagram} size="2x" className="text-white me-2" />
-          </Nav.Link>
-          <Nav.Link href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-            <FontAwesomeIcon icon={faFacebook} size="2x" className="text-white me-2" />
+          <Nav.Link as={Link} to="/cart" className="d-flex align-items-center">
+            <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
+            <span>{cartItemCount}</span>
           </Nav.Link>
         </Nav>
       </Container>
