@@ -34,7 +34,7 @@ const NavBar = () => {
           </Nav.Link>
           <Nav.Link as={Link} to="/store">
             <FontAwesomeIcon icon={faStore} className="me-2" />
-            Products
+            Store
           </Nav.Link>
         </Nav>
         <Nav>

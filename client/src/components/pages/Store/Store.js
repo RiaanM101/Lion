@@ -1,41 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import Product from './Product';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import ProductCategories from './ProductCategories';
 
 const Store = () => {
-  const [products, setProducts] = useState([]);
-  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProducts();
+    fetchCategories();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch('/api/categories');
       const data = await response.json();
-      setProducts(data);
-      setLoadingProducts(false);
+      setCategories(data);
+      setLoading(false);
     } catch (error) {
-      console.error('Error fetching products:', error);
-      setLoadingProducts(false);
+      console.error('Error fetching categories:', error);
+      setLoading(false);
     }
   };
 
-  const addToCart = async (productId) => {
-    try {
-      await fetch('/api/cart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId }),
-      });
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-    }
-  };
-
-  if (loadingProducts) {
+  if (loading) {
     return <div className="text-center my-5"><FontAwesomeIcon icon={faSpinner} spin size="3x" /></div>;
   }
 
@@ -44,14 +32,8 @@ const Store = () => {
       <h1 className="text-center mb-5">Store</h1>
       <div className="row">
         <div className="col-12">
-          <h2 className="mb-4">Store</h2>
-          <div className="row">
-            {products.map(product => (
-              <div key={product.id} className="col-md-6 mb-4">
-                <Product product={product} addToCart={addToCart} />
-              </div>
-            ))}
-          </div>
+          <h2 className="mb-4">Product Categories</h2>
+          <ProductCategories categories={categories} />
         </div>
       </div>
     </div>

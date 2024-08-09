@@ -12,6 +12,8 @@ import CartPage from './components/pages/Store/CartPage';
 import BlogsPage from './components/pages/BlogsPage'; // Update path if necessary
 import Navbar from './components/Navbar/NavBar'; // Update path if necessary
 import Footer from './components/Footer/Footer'; // Update path if necessary
+import CategoryProducts from './components/pages/Store/CategoryProducts';
+
 
 const App = () => {
   const isAdmin = true; // Replace with actual authentication logic
@@ -28,6 +30,8 @@ const App = () => {
           <Route path="/store/*" element={<StoreRoutes />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/category/:categoryId" component={CategoryProducts} />
+
 
 
           {isAdmin ? (
