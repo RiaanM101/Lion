@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { register as registerAction } from '../../redux/authSlice';
 import { register } from '../../services/authService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faPhone, faAddressBook } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faPhone, faAddressBook, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/AuthPage.css';
 import { Link } from 'react-router-dom';
@@ -17,9 +17,10 @@ const RegisterPage = () => {
   const [contactNumber, setContactNumber] = useState('');
   const [address, setAddress] = useState('');
   const [errors, setErrors] = useState({});
+  const [passwordVisible, setPasswordVisible] = useState(false); // State to manage password visibility
   const addressInputRef = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
@@ -50,23 +51,23 @@ const RegisterPage = () => {
 
     loadGoogleMapsScript();
   }, []);
-//Username validation
+
   const validateForm = () => {
     const newErrors = {};
     const usernamePattern = /^[a-zA-Z]{1,}\d{0,2}$/;
-//Email validation
+
     if (!email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
-    //Username validation
+
     if (!username) {
       newErrors.username = 'Username is required';
     } else if (!usernamePattern.test(username)) {
       newErrors.username = 'Username can only contain letters and up to 2 numbers, and no spaces or special characters';
     }
-    //Password validation
+
     if (!password) {
       newErrors.password = 'Password is required';
     } else if (password.length < 6) {
@@ -80,18 +81,19 @@ const RegisterPage = () => {
     } else if (!/[!@#$%^&*]/.test(password)) {
       newErrors.password = 'Password must contain at least one special character';
     }
-  
-     // Contact number validation
-  if (!contactNumber) {
-    newErrors.contactNumber = 'Contact number is required';
-  } else if (!/^\+\d+$/i.test(contactNumber)) {
-    newErrors.contactNumber = 'Contact number should start with a "+" and include your area code';
-  } else if (/\s/.test(contactNumber)) {
-    newErrors.contactNumber = 'Contact number should not contain spaces';
-  }
+
+    if (!contactNumber) {
+      newErrors.contactNumber = 'Contact number is required';
+    } else if (!/^\+\d+$/i.test(contactNumber)) {
+      newErrors.contactNumber = 'Contact number should start with a "+" and include your area code';
+    } else if (/\s/.test(contactNumber)) {
+      newErrors.contactNumber = 'Contact number should not contain spaces';
+    }
+
     if (!address) {
       newErrors.address = 'Address is required';
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -108,10 +110,10 @@ const RegisterPage = () => {
         title: 'Success!',
         text: 'Registration successful!',
         icon: 'success',
-        timer: 5000, // 5 seconds
+        timer: 5000,
         timerProgressBar: true,
         willClose: () => {
-          navigate('/login'); // Redirect to login page after the alert closes
+          navigate('/login');
         }
       });
     } catch (error) {
@@ -155,17 +157,33 @@ const RegisterPage = () => {
           />
           {errors.email && <div className="invalid-feedback">{errors.email}</div>}
         </div>
-        <div className="form-group">
+        <div className="form-group position-relative">
           <label htmlFor="password" className="auth-label">
             <FontAwesomeIcon icon={faLock} /> Password
           </label>
           <input
-            type="password"
+            type={passwordVisible ? 'text' : 'password'}
             id="password"
             className={`form-control ${errors.password ? 'is-invalid' : ''}`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <button
+            type="button"
+            className="password-toggle-btn"
+            onClick={() => setPasswordVisible(!passwordVisible)}
+            style={{
+              position: 'absolute',
+              top: '60%',
+              right: '10px',
+              transform: 'translateY(-50%)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+          </button>
           {errors.password && <div className="invalid-feedback">{errors.password}</div>}
         </div>
         <div className="form-group">
@@ -195,7 +213,24 @@ const RegisterPage = () => {
           />
           {errors.address && <div className="invalid-feedback">{errors.address}</div>}
         </div>
-        <button type="submit" className="btn btn-primary btn-block">
+        <button 
+          type="submit" 
+          className="btn btn-dark btn-block"
+          style={{
+            backgroundColor: '#000',
+            borderColor: '#000',
+            color: '#fff',
+            transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#333';
+            e.currentTarget.style.borderColor = '#333';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#000';
+            e.currentTarget.style.borderColor = '#000';
+          }}
+        >
           Register
         </button>
         <p className="auth-footer">

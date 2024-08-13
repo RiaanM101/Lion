@@ -83,7 +83,24 @@ const LoginPage = () => {
           />
           {errors.password && <div className="invalid-feedback">{errors.password}</div>}
         </div>
-        <button type="submit" className="btn btn-primary btn-block">
+        <button 
+          type="submit" 
+          className="btn btn-dark btn-block"
+          style={{
+            backgroundColor: '#000',
+            borderColor: '#000',
+            color: '#fff',
+            transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#333';
+            e.currentTarget.style.borderColor = '#333';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#000';
+            e.currentTarget.style.borderColor = '#000';
+          }}
+        >
           Login
         </button>
         <p className="auth-footer">
