@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\LION Backend",
+    "\\LION Backend\\LION Backend",
+    "\\LION Backend\\LION Backend\\Controllers"
   ],
-  "SelectedNode": "\\C:\\Users\\Kuziwa Mutowo\\Documents\\Projects\\Shumba 1",
+  "SelectedNode": "\\LION Backend\\LION Backend\\Controllers\\ProductCategoryController.cs",
   "PreviewInSolutionExplorer": false
 }
