@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import ProductCategories from './ProductCategories';
-
+import productService from '../../services/productService';
 const Store = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,8 +13,7 @@ const Store = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories');
-      const data = await response.json();
+      const data = await productService.fetchCategories();
       setCategories(data);
       setLoading(false);
     } catch (error) {
@@ -31,10 +30,18 @@ const Store = () => {
     <div className="container my-5">
       <h1 className="text-center mb-5">Store</h1>
       <div className="row">
-        <div className="col-12">
-          <h2 className="mb-4">Product Categories</h2>
-          <ProductCategories categories={categories} />
-        </div>
+        {categories.map(category => (
+          <div key={category.categoryID} className="col-md-4 mb-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{category.categoryDescription}</h5>
+                <Link to={`/products/${category.categoryID}`} className="btn btn-primary">
+                  View Products
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
