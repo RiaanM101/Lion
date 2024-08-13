@@ -1,5 +1,3 @@
-// src/App.js
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './components/pages/HomePage';
@@ -13,7 +11,7 @@ import BlogsPage from './components/pages/BlogsPage'; // Update path if necessar
 import Navbar from './components/Navbar/NavBar'; // Update path if necessary
 import Footer from './components/Footer/Footer'; // Update path if necessary
 import CategoryProducts from './components/pages/Store/CategoryProducts';
-
+import ProductItems from './components/pages/Store/ProductItems';
 
 const App = () => {
   const isAdmin = true; // Replace with actual authentication logic
@@ -30,9 +28,8 @@ const App = () => {
           <Route path="/store/*" element={<StoreRoutes />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/category/:categoryId" component={CategoryProducts} />
-
-
+          <Route path="/category/:categoryId" element={<CategoryProducts />} />
+          <Route path="/products/:categoryId" element={<ProductItems />} />
 
           {isAdmin ? (
             <Route path="/blogs" element={<BlogsPage />} />
