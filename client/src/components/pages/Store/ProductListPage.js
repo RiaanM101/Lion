@@ -1,79 +1,156 @@
 import React, { useState, useEffect } from 'react';
-import Product from './Product';
-import ProductForm from './ProductForm'; // For creating/editing products
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import ProductForm from './ProductForm';
+import productService from '../../services/productService';
 
 const ProductListPage = () => {
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    fetchProducts();
+    fetchCategories();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/products');
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-      const data = await response.json();
-      setProducts(data);
-      setLoading(false);
+      const categoriesData = await productService.fetchCategories();
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setError('Failed to load categories.');
+    }
+  };
+
+  const fetchProducts = async (categoryId) => {
+    setLoading(true);
+    try {
+      const productsData = await productService.fetchItemsByCategory(categoryId);
+      setProducts(productsData);
     } catch (error) {
       console.error('Error fetching products:', error);
-      setError(error);
+      setError('Failed to load products.');
+    } finally {
       setLoading(false);
     }
   };
 
+  const handleCategoryChange = (event) => {
+    const categoryId = event.target.value;
+    setSelectedCategoryId(categoryId);
+    fetchProducts(categoryId);
+  };
+
   const handleDelete = async (productId) => {
     try {
-      const response = await fetch(`/api/products/${productId}`, { method: 'DELETE' });
-      if (!response.ok) {
-        throw new Error('Failed to delete product');
-      }
+      await productService.deleteProduct(productId);
       setProducts(products.filter(product => product.id !== productId));
     } catch (error) {
       console.error('Error deleting product:', error);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="text-center my-5">
-        <FontAwesomeIcon icon={faSpinner} spin size="3x" />
-      </div>
-    );
-  }
+  const handleEdit = (product) => {
+    setSelectedProduct(product);
+    setShowForm(true);
+  };
 
-  if (error) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        <FontAwesomeIcon icon={faExclamationCircle} className="mr-2" />
-        Error fetching products: {error.message}
-      </div>
-    );
-  }
+  const handleAdd = () => {
+    setSelectedProduct(null);
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setSelectedProduct(null);
+  };
+
+  const handleProductSaved = () => {
+    if (selectedCategoryId) {
+      fetchProducts(selectedCategoryId);
+    }
+    closeForm();
+  };
 
   return (
     <div className="container my-4">
       <h2 className="mb-4">Product List</h2>
-      <ProductForm onProductAdded={fetchProducts} />
-      {products.length > 0 ? (
-        <ul className="list-group">
-          {products.map(product => (
-            <Product
-              key={product.id}
-              product={product}
-              onDelete={handleDelete}
-            />
+
+      <div className="mb-3">
+        <label htmlFor="categorySelect" className="form-label">Select a Product Category:</label>
+        <select
+          id="categorySelect"
+          className="form-select"
+          value={selectedCategoryId || ''}
+          onChange={handleCategoryChange}
+        >
+          <option value="" disabled>Select a category</option>
+          {categories.map(category => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.categoryDescription}
+            </option>
           ))}
-        </ul>
-      ) : (
-        <div>No products found.</div>
+        </select>
+      </div>
+
+      {selectedCategoryId && (
+        <>
+          <button className="btn btn-primary mb-3" onClick={handleAdd}>
+            Add Product
+          </button>
+
+          {showForm && (
+            <ProductForm
+              product={selectedProduct}
+              onClose={closeForm}
+              onProductSaved={handleProductSaved}
+              categoryId={selectedCategoryId}
+            />
+          )}
+
+          {loading ? (
+            <div>Loading products...</div>
+          ) : error ? (
+            <div className="alert alert-danger">{error}</div>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Quantity on Hand</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map(product => (
+                  <tr key={product.id}>
+                    <td>{product.description}</td>
+                    <td>R{product.price}</td>
+                    <td>{product.quantityOnHand}</td>
+                    <td>
+                      <button 
+                        className="btn btn-warning me-2" 
+                        onClick={() => handleEdit(product)}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className="btn btn-danger" 
+                        onClick={() => handleDelete(product.id)}
+                      >
+                        Delete Item
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </>
       )}
     </div>
   );

@@ -12,6 +12,8 @@ import Navbar from './components/Navbar/NavBar'; // Update path if necessary
 import Footer from './components/Footer/Footer'; // Update path if necessary
 import CategoryProducts from './components/pages/Store/CategoryProducts';
 import ProductItems from './components/pages/Store/ProductItems';
+import ProductListPage from './components/pages/Store/ProductListPage';
+
 
 const App = () => {
   const isAdmin = true; // Replace with actual authentication logic
@@ -30,6 +32,9 @@ const App = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/category/:categoryId" element={<CategoryProducts />} />
           <Route path="/products/:categoryId" element={<ProductItems />} />
+          <Route path="/productList" element={<ProductListPage />} />
+
+
 
           {isAdmin ? (
             <Route path="/blogs" element={<BlogsPage />} />
