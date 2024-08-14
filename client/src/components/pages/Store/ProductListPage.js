@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ProductForm from './ProductForm';
+import ProductForm from './ProductForm';  
 import productService from '../../services/productService';
+import '../../styles/Modal.css';  // Import the CSS file
 
 const ProductListPage = () => {
   const [categories, setCategories] = useState([]);
@@ -45,20 +46,25 @@ const ProductListPage = () => {
   };
 
   const handleDelete = async (productId) => {
+    console.log('Delete button clicked for product:', productId);
     try {
       await productService.deleteProduct(productId);
       setProducts(products.filter(product => product.id !== productId));
+      console.log('Product deleted successfully');
     } catch (error) {
       console.error('Error deleting product:', error);
+      setError('Failed to delete product.');
     }
   };
 
   const handleEdit = (product) => {
+    console.log('Edit button clicked for product:', product);
     setSelectedProduct(product);
     setShowForm(true);
   };
 
   const handleAdd = () => {
+    console.log('Add button clicked');
     setSelectedProduct(null);
     setShowForm(true);
   };
@@ -68,7 +74,8 @@ const ProductListPage = () => {
     setSelectedProduct(null);
   };
 
-  const handleProductSaved = () => {
+  const handleProductSaved = (savedProduct) => {
+    console.log('Product saved:', savedProduct);
     if (selectedCategoryId) {
       fetchProducts(selectedCategoryId);
     }
@@ -142,7 +149,7 @@ const ProductListPage = () => {
                         className="btn btn-danger" 
                         onClick={() => handleDelete(product.id)}
                       >
-                        Delete Item
+                        Delete
                       </button>
                     </td>
                   </tr>

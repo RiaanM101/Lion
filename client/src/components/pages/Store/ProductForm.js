@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import productService from '../../services/productService';
 
-const ProductForm = ({ product, onClose, onProductSaved, apiBaseUrl }) => {
+const ProductForm = ({ product, onClose, onProductSaved, categoryId, apiBaseUrl }) => {
   const [formData, setFormData] = useState({
     itemDescription: '',
-    categoryID: '',
+    categoryID: categoryId,
     price: '',
     quantityOnHand: '',
     productPhoto: null,
@@ -13,13 +14,13 @@ const ProductForm = ({ product, onClose, onProductSaved, apiBaseUrl }) => {
     if (product) {
       setFormData({
         itemDescription: product.description || '',
-        categoryID: product.categoryID || '',
+        categoryID: product.categoryID || categoryId,
         price: product.price || '',
         quantityOnHand: product.quantityOnHand || '',
         productPhoto: null,
       });
     }
-  }, [product]);
+  }, [product, categoryId]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -37,25 +38,13 @@ const ProductForm = ({ product, onClose, onProductSaved, apiBaseUrl }) => {
     }
 
     try {
-      let response;
+      let savedProduct;
       if (product) {
-        response = await fetch(`${apiBaseUrl}/UpdateItem/${product.id}`, {
-          method: 'PUT',
-          body: formDataToSend,
-        });
+        savedProduct = await productService.updateProduct(product.id, formDataToSend);
       } else {
-        response = await fetch(`${apiBaseUrl}/AddItem`, {
-          method: 'POST',
-          body: formDataToSend,
-        });
+        savedProduct = await productService.addProduct(formDataToSend);
       }
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-
-      onProductSaved();
+      onProductSaved(savedProduct);
     } catch (error) {
       console.error('Error saving product:', error);
       // Consider adding user-facing error handling here

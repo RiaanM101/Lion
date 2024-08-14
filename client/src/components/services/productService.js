@@ -2,13 +2,9 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://localhost:5000/api';
 
-const getAuthHeader = () => ({
-  headers: { 'x-auth-token': localStorage.getItem('token') }
-});
-
 const addProduct = async (productData) => {
   try {
-    const response = await axios.post(API_URL, productData, getAuthHeader());
+    const response = await axios.post(`${API_URL}/ProductItem/AddItem`, productData);
     return response.data;
   } catch (error) {
     console.error('Error adding product:', error);
@@ -18,7 +14,7 @@ const addProduct = async (productData) => {
 
 const updateProduct = async (id, productData) => {
   try {
-    const response = await axios.put(API_URL + id, productData, getAuthHeader());
+    const response = await axios.put(`${API_URL}/ProductItem/UpdateItem/${id}`, productData);
     return response.data;
   } catch (error) {
     console.error('Error updating product:', error);
@@ -28,7 +24,7 @@ const updateProduct = async (id, productData) => {
 
 const fetchProducts = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(`${API_URL}/ProductItem/GetAllItems`);
     return response.data;
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -38,7 +34,7 @@ const fetchProducts = async () => {
 
 const deleteProduct = async (id) => {
   try {
-    const response = await axios.delete(API_URL + id, getAuthHeader());
+    const response = await axios.delete(`${API_URL}/ProductItem/DeleteItem/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting product:', error);
@@ -48,7 +44,7 @@ const deleteProduct = async (id) => {
 
 const fetchCategories = async () => {
   try {
-    const response = await axios.get(API_URL + '/ProductCategory/GetAllCategories', getAuthHeader());
+    const response = await axios.get(`${API_URL}/ProductCategory/GetAllCategories`);
     return response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
@@ -58,7 +54,7 @@ const fetchCategories = async () => {
 
 const fetchItemsByCategory = async (categoryId) => {
   try {
-    const response = await axios.get(`${API_URL}/ProductItem/GetAllItems?categoryId=${categoryId}`, getAuthHeader());
+    const response = await axios.get(`${API_URL}/ProductItem/GetAllItems?categoryId=${categoryId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching product items:', error);
@@ -68,7 +64,7 @@ const fetchItemsByCategory = async (categoryId) => {
 
 const fetchCategoryById = async (categoryId) => {
   try {
-    const response = await axios.get(`${API_URL}/ProductCategory/GetCategory/${categoryId}`, getAuthHeader());
+    const response = await axios.get(`${API_URL}/ProductCategory/GetCategory/${categoryId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching category:', error);
