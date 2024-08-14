@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import productService from '../../services/productService';
 
-const ProductForm = ({ product, onClose, onProductSaved, categoryId, apiBaseUrl }) => {
+const ProductForm = ({ product, onClose, onProductSaved, categories, categoryId }) => {
   const [formData, setFormData] = useState({
     itemDescription: '',
-    categoryID: categoryId,
+    categoryID: categoryId,  // Initially use the categoryId passed from props
     price: '',
     quantityOnHand: '',
     productPhoto: null,
@@ -30,6 +30,14 @@ const ProductForm = ({ product, onClose, onProductSaved, categoryId, apiBaseUrl 
     }));
   };
 
+  const handleCategoryChange = (e) => {
+    const selectedCategoryID = categories.find(cat => cat.categoryDescription === e.target.value)?.categoryID;
+    setFormData(prevData => ({
+      ...prevData,
+      categoryID: selectedCategoryID || '',
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
@@ -52,63 +60,68 @@ const ProductForm = ({ product, onClose, onProductSaved, categoryId, apiBaseUrl 
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Description:
-            <input 
-              type="text" 
-              name="itemDescription" 
-              value={formData.itemDescription} 
-              onChange={handleChange} 
-              required
-            />
-          </label>
-          <label>
-            Category ID:
-            <input 
-              type="number" 
-              name="categoryID" 
-              value={formData.categoryID} 
-              onChange={handleChange} 
-              required
-            />
-          </label>
-          <label>
-            Price:
-            <input 
-              type="number" 
-              name="price" 
-              value={formData.price} 
-              onChange={handleChange} 
-              step="0.01" 
-              required
-            />
-          </label>
-          <label>
-            Quantity On Hand:
-            <input 
-              type="number" 
-              name="quantityOnHand" 
-              value={formData.quantityOnHand} 
-              onChange={handleChange} 
-              required
-            />
-          </label>
-          <label>
-            Product Photo:
-            <input 
-              type="file" 
-              name="productPhoto" 
-              onChange={handleChange} 
-            />
-          </label>
-          <button type="submit">{product ? 'Update' : 'Add'} Product</button>
-        </form>
-      </div>
-    </div>
+    <>
+      <h2>{product ? 'Edit' : 'Add'} Product</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Description:
+          <input 
+            type="text" 
+            name="itemDescription" 
+            value={formData.itemDescription} 
+            onChange={handleChange} 
+            required
+          />
+        </label>
+        <label>
+          Category:
+          <select
+            name="categoryDescription"
+            value={categories.find(cat => cat.categoryID === formData.categoryID)?.categoryDescription || ''}
+            onChange={handleCategoryChange}
+            required
+          >
+            <option value="" disabled>Select a category</option>
+            {categories.map(category => (
+              <option key={category.categoryID} value={category.categoryDescription}>
+                {category.categoryDescription}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Price:
+          <input 
+            type="number" 
+            name="price" 
+            value={formData.price} 
+            onChange={handleChange} 
+            step="1" 
+            required
+          />
+        </label>
+        <label>
+          Quantity On Hand:
+          <input 
+            type="number" 
+            name="quantityOnHand" 
+            value={formData.quantityOnHand} 
+            onChange={handleChange} 
+            required
+          />
+        </label>
+        <label>
+          Product Photo:
+          <input 
+            type="file" 
+            name="productPhoto" 
+            onChange={handleChange} 
+          />
+        </label>
+        <button type="submit">{product ? 'Update' : 'Add'} Product</button>
+        <button type="button" onClick={onClose}>Cancel</button>
+      </form>
+    </>
   );
 };
 

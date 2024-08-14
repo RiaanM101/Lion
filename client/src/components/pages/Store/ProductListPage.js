@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductForm from './ProductForm';  
 import productService from '../../services/productService';
-import '../../styles/Modal.css';  // Import the CSS file
+import '../../styles/Modal.css'; 
 
 const ProductListPage = () => {
   const [categories, setCategories] = useState([]);
@@ -61,6 +61,7 @@ const ProductListPage = () => {
     console.log('Edit button clicked for product:', product);
     setSelectedProduct(product);
     setShowForm(true);
+    console.log('showForm set to:', true);
   };
 
   const handleAdd = () => {
@@ -110,12 +111,17 @@ const ProductListPage = () => {
           </button>
 
           {showForm && (
-            <ProductForm
-              product={selectedProduct}
-              onClose={closeForm}
-              onProductSaved={handleProductSaved}
-              categoryId={selectedCategoryId}
-            />
+            <div className={`modal ${showForm ? 'show' : ''}`}>
+              <div className="modal-content">
+                <ProductForm
+                  product={selectedProduct}
+                  onClose={closeForm}
+                  onProductSaved={handleProductSaved}
+                  categoryId={selectedCategoryId}
+                  categories={categories}  
+                />
+              </div>
+            </div>
           )}
 
           {loading ? (
